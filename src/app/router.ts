@@ -24,7 +24,7 @@ const ROUTES: RouteDef[] = [
   { pattern: /^\/?$/, name: 'menu' },
   { pattern: /^\/menu$/, name: 'menu' },
   { pattern: /^\/levels$/, name: 'levels' },
-  { pattern: /^\/level\/([1-3])$/, name: 'level', keys: ['n'] },
+  { pattern: /^\/level\/([1-2])$/, name: 'level', keys: ['n'] },
   { pattern: /^\/lab$/, name: 'lab' },
   { pattern: /^\/leaderboard$/, name: 'leaderboard' },
 ];

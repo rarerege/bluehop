@@ -21,7 +21,7 @@ export class MenuScene extends Scene {
       play,
       button('Level Select', { icon: icons.grid, onClick: go('/levels') }),
       button('Lab Mode', { icon: icons.lab, className: 'btn--magenta', onClick: go('/lab') }),
-      button('Leaderboard', { icon: icons.trophy, onClick: go('/leaderboard') }),
+      button('Trophies', { icon: icons.trophy, onClick: go('/leaderboard') }),
       button('Settings', {
         icon: icons.gear,
         className: 'btn--ghost',

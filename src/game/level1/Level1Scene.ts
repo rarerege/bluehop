@@ -992,7 +992,7 @@ export class Level1Scene extends Scene {
       ],
       actions: [
         { label: 'Play again', onClick: () => this.restart() },
-        { label: 'Next: Hop or Drop', primary: true, onClick: () => this.ctx.navigate('/level/2') },
+        { label: 'Next: Stack Builder', primary: true, onClick: () => this.ctx.navigate('/level/2') },
         { label: 'Level select', onClick: () => this.ctx.navigate('/levels') },
       ],
     });

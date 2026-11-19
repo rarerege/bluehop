@@ -13,8 +13,7 @@ export interface BadgeInfo {
 
 export const BADGES: Readonly<Record<string, BadgeInfo>> = {
   harald: { id: 'harald', name: "Harald's Rune", description: 'Seven active slaves in one piconet.' },
-  ghost: { id: 'ghost', name: 'Ghost Hopper', description: 'Over 95% delivery during a Wi-Fi attack.' },
-  redline: { id: 'redline', name: 'Redline', description: 'Touched 723.2 kbit/s with DH5.' },
+  builder: { id: 'builder', name: 'Master Builder', description: 'All six protocol towers built without a wrong block.' },
 };
 
 interface Progress {

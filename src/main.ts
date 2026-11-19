@@ -11,17 +11,13 @@ import { SettingsStore } from './app/settings';
 import { SceneManager } from './app/SceneManager';
 import type { AppContext } from './app/Scene';
 import { navigate, parentPath, startRouter } from './app/router';
-import { SPEED_STEPS } from './app/speed';
 import { Synth } from './audio/Synth';
 import { Music } from './audio/Music';
 import { Backdrop } from './game/Backdrop';
 import { MenuScene } from './game/MenuScene';
 import { LevelSelectScene } from './game/LevelSelectScene';
-import { PlaceholderScene } from './game/PlaceholderScene';
-import { LEVELS } from './game/levels';
 import { Level1Scene } from './game/level1/Level1Scene';
-import { Level2Scene } from './game/level2/Level2Scene';
-import { Level3Scene } from './game/level3/Level3Scene';
+import { StackScene } from './game/stack/StackScene';
 import { LabScene } from './game/lab/LabScene';
 import { LeaderboardScene } from './game/LeaderboardScene';
 import { closeTopModal, isModalOpen } from './ui/Modal';
@@ -33,7 +29,7 @@ import { installShortcuts } from './ui/shortcuts';
 /**
  * Render resolution: sharp on phones (up to 2× DPR) but capped at ~2.2 M
  * device pixels, so a 1080p projector renders at 1× and the bloom filters
- * keep 60 fps (measured: 2× at 1920×1080 dropped Level 2 to ~23 fps).
+ * keep 60 fps (measured: 2× at 1920×1080 dropped an earlier, heavier level to ~23 fps).
  */
 const MAX_DEVICE_PIXELS = 2_200_000;
 function pickResolution(): number {
@@ -113,18 +109,7 @@ async function boot(): Promise<void> {
 
   manager.register('menu', () => new MenuScene());
   manager.register('levels', () => new LevelSelectScene());
-  manager.register('level', (route) => {
-    if (route.params.n === '1') return new Level1Scene();
-    if (route.params.n === '2') return new Level2Scene();
-    if (route.params.n === '3') return new Level3Scene();
-    const lv = LEVELS.find((l) => String(l.n) === route.params.n) ?? LEVELS[0]!;
-    return new PlaceholderScene({
-      title: `Level ${lv.n} — ${lv.title}`,
-      eyebrow: lv.concepts.join(' · '),
-      phase: lv.phase,
-      bullets: [lv.pitch],
-    });
-  });
+  manager.register('level', (route) => (route.params.n === '2' ? new StackScene() : new Level1Scene()));
   manager.register('lab', () => new LabScene());
   manager.register('leaderboard', () => new LeaderboardScene());
 
@@ -156,10 +141,6 @@ async function boot(): Promise<void> {
     toggleLab: () => settings.toggle('labMode'),
     toggleFullscreen: () => void toggleFullscreen(),
     openSettings: () => ctx.openSettings(),
-    speed: (d) => {
-      const i = Math.min(SPEED_STEPS.length - 1, Math.max(0, settings.get().speedIndex + d));
-      settings.set({ speedIndex: i });
-    },
   });
 
   startRouter((route) => void manager.show(route));

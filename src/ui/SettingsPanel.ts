@@ -1,5 +1,4 @@
 import type { Settings, SettingsStore } from '../app/settings';
-import { SPEED_STEPS } from '../app/speed';
 import type { Synth } from '../audio/Synth';
 import { h } from './dom';
 import { openModal, type ModalHandle } from './Modal';
@@ -39,18 +38,6 @@ export function openSettingsPanel(settings: SettingsStore, audio: Synth): ModalH
   });
   volume.addEventListener('change', () => audio.click());
 
-  // Simulation speed
-  const speed = h('input', { type: 'range', min: 0, max: SPEED_STEPS.length - 1, step: 1, 'aria-label': 'Simulation speed' });
-  speed.value = String(s.speedIndex);
-  const speedOut = h('output', {}, SPEED_STEPS[s.speedIndex]!.label);
-  speed.addEventListener('input', () => settings.set({ speedIndex: Number(speed.value) }));
-  unsubs.push(
-    settings.subscribe((st) => {
-      speed.value = String(st.speedIndex);
-      speedOut.textContent = SPEED_STEPS[st.speedIndex]!.label;
-    }),
-  );
-
   const kbdRows = SHORTCUTS.map((sc) =>
     h('tr', {}, h('td', {}, ...sc.keys.split(' ').map((k) => h('kbd', {}, k))), h('td', {}, sc.action)),
   );
@@ -67,13 +54,6 @@ export function openSettingsPanel(settings: SettingsStore, audio: Synth): ModalH
     ),
     switchField('music', 'Music', 'Synthwave loop, generated live in your browser'),
     switchField('reducedMotion', 'Reduced motion', 'No screen shake, fewer particles, static background'),
-    h(
-      'div',
-      { class: 'field field--stack' },
-      h('div', { class: 'field__row' }, h('span', {}, 'Simulation speed'), speedOut),
-      speed,
-      h('span', { class: 'field__hint' }, 'Slows simulated time so hops are visible. The HUD always shows the real time in µs.'),
-    ),
     switchField('labMode', 'Lab Mode', 'Overlay real numbers and graphs (for examiners)'),
     h('h3', { style: 'margin-top:1.4rem;font-size:1rem' }, 'Keyboard shortcuts'),
     h('table', { class: 'kbd-table' }, h('tbody', {}, ...kbdRows)),

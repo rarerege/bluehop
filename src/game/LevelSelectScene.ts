@@ -22,7 +22,7 @@ export class LevelSelectScene extends Scene {
           'div',
           { class: 'chips' },
           ...lv.concepts.map((c) => h('span', { class: 'chip' }, c)),
-          lv.ready ? h('span', { class: 'chip chip--ready' }, 'Play ▸') : h('span', { class: 'chip chip--soon' }, `Phase ${lv.phase}`),
+          h('span', { class: 'chip chip--ready' }, 'Play ▸'),
         ),
       );
       if (i === 0) card.dataset.autofocus = '';

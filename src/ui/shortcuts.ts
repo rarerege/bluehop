@@ -14,23 +14,20 @@ export const SHORTCUTS: readonly Shortcut[] = [
   { keys: 'L', action: 'Toggle Lab Mode (real numbers)' },
   { keys: 'F', action: 'Toggle fullscreen' },
   { keys: 'O', action: 'Open settings' },
-  { keys: 'P', action: 'Pause / resume (in levels)' },
+  { keys: 'P', action: 'Pause / resume (Level 1)' },
   { keys: 'R', action: 'Restart level' },
-  { keys: '[ ]', action: 'Slower / faster simulation (Level 2)' },
   { keys: 'I', action: 'Inquiry (Level 1)' },
-  { keys: 'A', action: 'AFH channel assessment (Level 2)' },
-  { keys: '1 – 6', action: 'Shift packet type (Level 3)' },
+  { keys: 'Tab ↵', action: 'Pick a block / answer (Level 2)' },
 ];
 
 export interface ShortcutHandlers {
-  /** Give the active scene first refusal (levels use P, R, 1–6…). */
+  /** Give the active scene first refusal (levels use P, R, I…). */
   sceneKey(e: KeyboardEvent): boolean;
   escape(e: KeyboardEvent): void;
   toggleSound(): void;
   toggleLab(): void;
   toggleFullscreen(): void;
   openSettings(): void;
-  speed(delta: number): void;
 }
 
 function isTyping(target: EventTarget | null): boolean {
@@ -63,12 +60,6 @@ export function installShortcuts(hd: ShortcutHandlers): void {
         break;
       case 'o':
         hd.openSettings();
-        break;
-      case '[':
-        hd.speed(-1);
-        break;
-      case ']':
-        hd.speed(1);
         break;
       default:
         return;
