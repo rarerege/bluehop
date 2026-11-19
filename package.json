@@ -1,0 +1,28 @@
+{
+  "name": "bluehop",
+  "private": true,
+  "version": "0.1.0",
+  "description": "BlueHop: Command the Piconet — a gamified Bluetooth (IEEE 802.15.1 Basic Rate) simulation",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "chart.js": "^4.6.1",
+    "pixi-filters": "^6.1.5",
+    "pixi.js": "^8.23.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/qrcode": "^1.5.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
+  }
+}
