@@ -5,8 +5,8 @@ piconets, frequency hopping, TDD slots, ACL/SCO links, packet types, FEC/ARQ, sc
 Every game rule is driven by a pure, unit-tested simulation engine, and **Lab Mode** shows the real
 numbers for examiners.
 
-> Status: **All three levels are playable** (Phase 5). Engine and level logic have 71 Vitest tests.
-> Lab Mode graphs, polish and docs follow.
+> Status: **All three levels and Lab Mode are done** (Phase 6). 77 Vitest tests.
+> Polish (sound, leaderboard screen, mobile pass) and docs follow.
 
 ## Run locally
 

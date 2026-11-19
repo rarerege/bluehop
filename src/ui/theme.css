@@ -432,6 +432,107 @@ h3 {
   margin-top: 0.35rem;
 }
 
+/* ── Lab Mode screen ────────────────────────────────────────────────── */
+
+.lab-page {
+  padding-bottom: 3rem;
+}
+.lab-intro {
+  margin: -0.6rem 0 1.4rem;
+  max-width: 60rem;
+}
+.lab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
+  gap: 1.1rem;
+}
+.lab-card {
+  padding: 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-width: 0;
+}
+.lab-card--wide {
+  grid-column: 1 / -1;
+}
+.lab-card h3 {
+  font-size: 1.15rem;
+  color: var(--cyan);
+}
+.lab-card p {
+  margin: 0;
+  font-size: 0.85rem;
+}
+.lab-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.lab-select {
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--text);
+  background: var(--panel-solid);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.6rem;
+  min-height: 40px;
+}
+.chart {
+  position: relative;
+  height: clamp(240px, 32vh, 360px);
+}
+.lab-status {
+  font-size: 0.75rem;
+  color: var(--yellow);
+  min-height: 1.2em;
+}
+.lab-note {
+  color: var(--text-dim);
+  border-left: 2px solid var(--magenta);
+  padding-left: 0.7rem;
+}
+.table-scroll {
+  overflow-x: auto;
+}
+.rate-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.rate-table th,
+.rate-table td {
+  text-align: right;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.rate-table th:first-child,
+.rate-table td:first-child {
+  text-align: left;
+}
+.rate-table th {
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.rate-table tr.hi td {
+  color: var(--yellow);
+}
+.rate-table tr.sco td:first-child {
+  color: var(--green);
+}
+.lab-derive {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
 /* ── Toolbar (top-right, every screen) ──────────────────────────────── */
 
 .toolbar {

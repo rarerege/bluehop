@@ -21,6 +21,7 @@ import { LEVELS } from './game/levels';
 import { Level1Scene } from './game/level1/Level1Scene';
 import { Level2Scene } from './game/level2/Level2Scene';
 import { Level3Scene } from './game/level3/Level3Scene';
+import { LabScene } from './game/lab/LabScene';
 import { closeTopModal, isModalOpen } from './ui/Modal';
 import { openSettingsPanel } from './ui/SettingsPanel';
 import { openQrCard } from './ui/QrCard';
@@ -102,22 +103,7 @@ async function boot(): Promise<void> {
       bullets: [lv.pitch],
     });
   });
-  manager.register(
-    'lab',
-    () =>
-      new PlaceholderScene({
-        title: 'Lab Mode',
-        eyebrow: 'For examiners · real numbers',
-        phase: 6,
-        bullets: [
-          'Throughput vs BER for DM1/DH1/DM3/DH3/DM5/DH5 — analytic curve + simulated points',
-          'Collision probability vs number of piconets: 1 − (78/79)^(n−1)',
-          'Packet loss vs Wi-Fi duty cycle, AFH off vs on',
-          'Connection setup time histogram (mean ≈ 0.64 s, max ≈ 2.56 s)',
-          'Max data-rate table (723.2 / 57.6 / 433.9 kbit/s) and CSV export',
-        ],
-      }),
-  );
+  manager.register('lab', () => new LabScene());
   manager.register(
     'leaderboard',
     () =>
