@@ -22,6 +22,7 @@ export const LEVELS: readonly LevelInfo[] = [
     concepts: ['Piconet', 'Inquiry / Page', 'AMA 3-bit', 'PMA 8-bit', 'Park', 'Scatternet'],
     color: 'var(--cyan)',
     phase: 4,
+    ready: true,
   },
   {
     n: 2,

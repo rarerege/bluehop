@@ -95,6 +95,45 @@ export function showTutorial(parent: HTMLElement, steps: TutorialStep[], onDone:
   };
 }
 
+export interface PauseOpts {
+  /** Line under the title, e.g. the simulated time. */
+  info: string;
+  onResume: () => void;
+  onRestart: () => void;
+  onQuit: () => void;
+}
+
+/** Pause dialog: Resume / Restart / Quit. */
+export function showPause(parent: HTMLElement, o: PauseOpts): OverlayHandle {
+  const resume = button('Resume', { className: 'btn--primary', onClick: () => o.onResume() });
+  const root = h(
+    'div',
+    { class: 'overlay' },
+    h(
+      'div',
+      { class: 'pause panel', role: 'dialog', 'aria-modal': 'true' },
+      h('h2', {}, 'Paused'),
+      h('p', { class: 'dim mono', style: 'margin:0 0 .6rem' }, o.info),
+      resume,
+      button('Restart', { onClick: () => o.onRestart() }),
+      button('Quit to level select', { className: 'btn--ghost', onClick: () => o.onQuit() }),
+    ),
+  );
+  parent.appendChild(root);
+  resume.focus({ preventScroll: true });
+  let closed = false;
+  return {
+    close() {
+      if (closed) return;
+      closed = true;
+      root.remove();
+    },
+    onKey() {
+      return false;
+    },
+  };
+}
+
 export interface EndCardOpts {
   title: string;
   subtitle?: string;

@@ -18,6 +18,7 @@ import { MenuScene } from './game/MenuScene';
 import { LevelSelectScene } from './game/LevelSelectScene';
 import { PlaceholderScene } from './game/PlaceholderScene';
 import { LEVELS } from './game/levels';
+import { Level1Scene } from './game/level1/Level1Scene';
 import { Level2Scene } from './game/level2/Level2Scene';
 import { closeTopModal, isModalOpen } from './ui/Modal';
 import { openSettingsPanel } from './ui/SettingsPanel';
@@ -89,6 +90,7 @@ async function boot(): Promise<void> {
   manager.register('menu', () => new MenuScene());
   manager.register('levels', () => new LevelSelectScene());
   manager.register('level', (route) => {
+    if (route.params.n === '1') return new Level1Scene();
     if (route.params.n === '2') return new Level2Scene();
     const lv = LEVELS.find((l) => String(l.n) === route.params.n) ?? LEVELS[0]!;
     return new PlaceholderScene({
