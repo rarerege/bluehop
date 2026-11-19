@@ -167,6 +167,10 @@
   font-size: 0.72rem;
   color: var(--text-dim);
 }
+.legend__note {
+  font-style: italic;
+  opacity: 0.75;
+}
 .legend i {
   display: inline-block;
   width: 0.8em;

@@ -560,6 +560,7 @@ export class Level2Scene extends Scene {
         ['#ffc23b', 'Microwave'],
       ].map(([c, t]) => h('span', {}, h('i', { style: `background:${c}` }), t!)),
       h('span', {}, h('i', { style: 'background:transparent;outline:1.5px solid #fff' }), 'Retransmission'),
+      h('span', { class: 'legend__note' }, 'Simplified hop generator (real spec uses the hop-selection kernel)'),
     );
 
     const hud = h(
@@ -682,7 +683,7 @@ export class Level2Scene extends Scene {
       for (let i = this.shown.length - 1; i >= 0 && !cur; i--) if (this.shown[i]!.from === 'master') cur = this.shown[i];
       const measured = c.rivalWindow ? (c.rivalHits / c.rivalWindow) * 100 : 0;
       this.els.lab.textContent = [
-        `slot ${Math.floor(D)}  ·  t = ${(D * SLOT_US).toFixed(0)} µs  ·  slot = 625 µs  ·  1600 hops/s`,
+        `slot ${Math.floor(D)}  ·  t = ${(D * SLOT_US).toFixed(0)} µs  ·  slot = 625 µs  ·  1600 hops/s  ·  simplified hop generator (spec: hop-selection kernel)`,
         cur ? `last master hop: k = ${cur.channel} → f = ${channelFreqMHz(cur.channel)} MHz  (${cur.type}, ${cur.slots} slot${cur.slots > 1 ? 's' : ''})` : 'last master hop: —',
         `ACL DH3 → / DH1 ←   ·   SCO HV3, T_SCO = 6 slots   ·   BER clean ${LEVEL2_BASE_BER.toExponential(0)}, jammed ${JAMMED_BER}`,
         `rival collisions: theory load × 1/79 = ${((RIVAL_LOAD / 79) * 100).toFixed(2)} %  ·  measured ${measured.toFixed(2)} % of packets since slot ${RIVAL_START}`,

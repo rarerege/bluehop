@@ -50,7 +50,7 @@ export const LEVEL2_TUTORIAL: TutorialStep[] = [
   },
   {
     title: 'Survive the interference',
-    body: 'Wi-Fi, a microwave and a rival piconet will show up. Lost data packets (ACL) are retransmitted; voice (SCO) never is — it crackles. When AFH unlocks, tap or drag across noisy lanes to blacklist them. P pauses, [ ] changes speed.',
+    body: 'Wi-Fi, a microwave and a rival piconet will show up. Lost data packets (ACL) are retransmitted; voice (SCO) never is — it crackles. When AFH unlocks (a later enhancement, Bluetooth 1.2), tap or drag across noisy lanes to blacklist them. P pauses, [ ] changes speed.',
     art: afhArt,
   },
 ];

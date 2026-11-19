@@ -126,7 +126,7 @@ export class LabScene extends Scene {
         h(
           'p',
           { class: 'dim lab-intro' },
-          'The numbers behind the game. Every curve comes from src/sim — the same engine the levels run on. Press L in any level to overlay live Lab numbers there.',
+          'The numbers behind the game. Every curve comes from src/sim — the same engine the levels run on (with a simplified hop generator; the real spec uses the hop-selection kernel). AFH is a later enhancement (Bluetooth 1.2). Press L in any level to overlay live Lab numbers there.',
         ),
         h('div', { class: 'lab-grid' }, this.panels.throughput.el, this.panels.collision.el, this.panels.wifi.el, this.panels.setup.el, table),
       ),

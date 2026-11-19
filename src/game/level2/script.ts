@@ -32,7 +32,7 @@ export interface ScriptEvent {
 export const EVENTS: readonly ScriptEvent[] = [
   { at: 0, title: 'Calm skies', detail: 'Watch your piconet hop: a new lane every 625 µs.', color: 'var(--cyan)' },
   { at: WIFI_START, title: 'Wi-Fi monster!', detail: 'Access point on Wi-Fi channel 6 — 2426–2448 MHz, 22 lanes wide.', color: 'var(--violet)' },
-  { at: AFH_UNLOCK, title: 'AFH unlocked', detail: 'Tap or drag across lanes to blacklist them (Bluetooth 1.2).', color: 'var(--red)', unlockAfh: true },
+  { at: AFH_UNLOCK, title: 'AFH unlocked', detail: 'Later enhancement (Bluetooth 1.2): tap or drag across lanes to blacklist them.', color: 'var(--red)', unlockAfh: true },
   { at: 650, title: 'Microwave on', detail: 'Pulsing at 50 Hz around 2450–2460 MHz.', color: 'var(--yellow)' },
   { at: RIVAL_START, title: 'Rival piconet', detail: 'Another piconet with its own hop pattern — it lands on your lane about 1 slot in 79.', color: 'var(--orange)' },
   { at: 1250, title: 'Wi-Fi moved!', detail: 'The AP switched to channel 1 (2401–2423 MHz). Re-adapt!', color: 'var(--violet)' },

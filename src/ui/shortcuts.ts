@@ -16,7 +16,9 @@ export const SHORTCUTS: readonly Shortcut[] = [
   { keys: 'O', action: 'Open settings' },
   { keys: 'P', action: 'Pause / resume (in levels)' },
   { keys: 'R', action: 'Restart level' },
-  { keys: '[ ]', action: 'Slower / faster simulation' },
+  { keys: '[ ]', action: 'Slower / faster simulation (Level 2)' },
+  { keys: 'I', action: 'Inquiry (Level 1)' },
+  { keys: 'A', action: 'AFH channel assessment (Level 2)' },
   { keys: '1 – 6', action: 'Shift packet type (Level 3)' },
 ];
 
