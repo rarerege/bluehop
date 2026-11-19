@@ -143,6 +143,11 @@ export interface EndCardOpts {
   stats: [string, string][];
   badges: BadgeInfo[];
   learned: string[];
+  /** Replaces "<score> points" (e.g. Level 3 scores by time). */
+  scoreText?: string;
+  scoreUnit?: string;
+  /** Extra content above "What just happened?" (e.g. nickname form). */
+  extra?: Node;
   actions: { label: string; primary?: boolean; onClick: () => void }[];
 }
 
@@ -186,9 +191,15 @@ export function showEndCard(parent: HTMLElement, o: EndCardOpts): OverlayHandle 
     h('div', { class: 'eyebrow' }, o.subtitle ?? 'Level complete'),
     h('h2', {}, o.title),
     stars,
-    h('div', { class: 'end__score' }, h('span', { class: 'mono' }, String(o.score)), h('span', { class: 'dim' }, o.newBest ? ' points · new best!' : ' points')),
+    h(
+      'div',
+      { class: 'end__score' },
+      h('span', { class: 'mono' }, o.scoreText ?? String(o.score)),
+      h('span', { class: 'dim' }, `${o.scoreUnit ?? ' points'}${o.newBest ? ' · new best!' : ''}`),
+    ),
     stats,
     badges,
+    o.extra ?? null,
     learned,
     actions,
   );

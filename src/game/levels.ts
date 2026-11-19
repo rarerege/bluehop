@@ -40,5 +40,6 @@ export const LEVELS: readonly LevelInfo[] = [
     concepts: ['DM1–DH5', 'FEC 2/3', 'ARQ', '723.2 kbit/s'],
     color: 'var(--yellow)',
     phase: 5,
+    ready: true,
   },
 ];

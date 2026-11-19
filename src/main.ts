@@ -20,6 +20,7 @@ import { PlaceholderScene } from './game/PlaceholderScene';
 import { LEVELS } from './game/levels';
 import { Level1Scene } from './game/level1/Level1Scene';
 import { Level2Scene } from './game/level2/Level2Scene';
+import { Level3Scene } from './game/level3/Level3Scene';
 import { closeTopModal, isModalOpen } from './ui/Modal';
 import { openSettingsPanel } from './ui/SettingsPanel';
 import { openQrCard } from './ui/QrCard';
@@ -92,6 +93,7 @@ async function boot(): Promise<void> {
   manager.register('level', (route) => {
     if (route.params.n === '1') return new Level1Scene();
     if (route.params.n === '2') return new Level2Scene();
+    if (route.params.n === '3') return new Level3Scene();
     const lv = LEVELS.find((l) => String(l.n) === route.params.n) ?? LEVELS[0]!;
     return new PlaceholderScene({
       title: `Level ${lv.n} — ${lv.title}`,
