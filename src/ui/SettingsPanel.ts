@@ -65,7 +65,7 @@ export function openSettingsPanel(settings: SettingsStore, audio: Synth): ModalH
       h('div', { class: 'field__row' }, h('span', {}, 'Volume'), volOut),
       volume,
     ),
-    switchField('music', 'Music', 'Synthwave loop — arrives in the polish phase'),
+    switchField('music', 'Music', 'Synthwave loop, generated live in your browser'),
     switchField('reducedMotion', 'Reduced motion', 'No screen shake, fewer particles, static background'),
     h(
       'div',

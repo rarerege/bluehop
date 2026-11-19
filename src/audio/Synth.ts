@@ -33,12 +33,15 @@ export class Synth {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
   private noiseBuffer: AudioBuffer | null = null;
+  private unlockListeners: ((ctx: AudioContext) => void)[] = [];
 
   constructor(private readonly settings: SettingsStore) {
     const unlock = () => {
-      this.ensure();
+      const ctx = this.ensure();
       window.removeEventListener('pointerdown', unlock);
       window.removeEventListener('keydown', unlock);
+      if (ctx) for (const fn of this.unlockListeners) fn(ctx);
+      this.unlockListeners = [];
     };
     window.addEventListener('pointerdown', unlock);
     window.addEventListener('keydown', unlock);
@@ -48,6 +51,15 @@ export class Synth {
       if (document.hidden) void this.ctx.suspend();
       else void this.ctx.resume();
     });
+  }
+
+  /**
+   * Run `fn` with the AudioContext as soon as audio is allowed (immediately
+   * if it already is). Used by the music loop, which shares this context.
+   */
+  whenUnlocked(fn: (ctx: AudioContext) => void): void {
+    if (this.ctx) fn(this.ctx);
+    else this.unlockListeners.push(fn);
   }
 
   // ── Public sound palette ──────────────────────────────────────────────

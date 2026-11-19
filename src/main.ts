@@ -13,6 +13,7 @@ import type { AppContext } from './app/Scene';
 import { navigate, parentPath, startRouter } from './app/router';
 import { SPEED_STEPS } from './app/speed';
 import { Synth } from './audio/Synth';
+import { Music } from './audio/Music';
 import { Backdrop } from './game/Backdrop';
 import { MenuScene } from './game/MenuScene';
 import { LevelSelectScene } from './game/LevelSelectScene';
@@ -22,11 +23,24 @@ import { Level1Scene } from './game/level1/Level1Scene';
 import { Level2Scene } from './game/level2/Level2Scene';
 import { Level3Scene } from './game/level3/Level3Scene';
 import { LabScene } from './game/lab/LabScene';
+import { LeaderboardScene } from './game/LeaderboardScene';
 import { closeTopModal, isModalOpen } from './ui/Modal';
 import { openSettingsPanel } from './ui/SettingsPanel';
 import { openQrCard } from './ui/QrCard';
 import { mountToolbar, toggleFullscreen } from './ui/Toolbar';
 import { installShortcuts } from './ui/shortcuts';
+
+/**
+ * Render resolution: sharp on phones (up to 2× DPR) but capped at ~2.2 M
+ * device pixels, so a 1080p projector renders at 1× and the bloom filters
+ * keep 60 fps (measured: 2× at 1920×1080 dropped Level 2 to ~23 fps).
+ */
+const MAX_DEVICE_PIXELS = 2_200_000;
+function pickResolution(): number {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const css = Math.max(1, window.innerWidth * window.innerHeight);
+  return Math.max(1, Math.min(dpr, Math.sqrt(MAX_DEVICE_PIXELS / css)));
+}
 
 async function boot(): Promise<void> {
   const settings = new SettingsStore();
@@ -37,13 +51,21 @@ async function boot(): Promise<void> {
     background: '#05060f',
     antialias: true,
     autoDensity: true,
-    // Cap DPR at 2: sharper than 1 on phones, without 3× fill cost.
-    resolution: Math.min(window.devicePixelRatio || 1, 2),
+    resolution: pickResolution(),
     preference: 'webgl',
   });
   document.getElementById('stage')!.appendChild(app.canvas);
+  // Re-evaluate when the window changes size (e.g. dragged onto the projector).
+  window.addEventListener('resize', () => {
+    const r = pickResolution();
+    if (Math.abs(r - app.renderer.resolution) > 0.01) {
+      app.renderer.resolution = r;
+      app.renderer.resize(window.innerWidth, window.innerHeight);
+    }
+  });
 
   const audio = new Synth(settings);
+  const music = new Music(audio, settings);
   const backdrop = new Backdrop(settings);
   backdrop.resize(app.screen.width, app.screen.height);
 
@@ -104,16 +126,7 @@ async function boot(): Promise<void> {
     });
   });
   manager.register('lab', () => new LabScene());
-  manager.register(
-    'leaderboard',
-    () =>
-      new PlaceholderScene({
-        title: 'Leaderboard',
-        eyebrow: 'Fastest 1 MB transfers',
-        phase: 7,
-        bullets: ['Local leaderboard stored on this device', 'Optional shared live board for the projector (asks first)'],
-      }),
-  );
+  manager.register('leaderboard', () => new LeaderboardScene());
 
   mountToolbar(settings, {
     toggleSound: () => {
@@ -152,7 +165,7 @@ async function boot(): Promise<void> {
   startRouter((route) => void manager.show(route));
 
   // Handy for debugging in the console during development.
-  if (import.meta.env.DEV) (window as unknown as Record<string, unknown>).__bluehop = { app, manager, settings };
+  if (import.meta.env.DEV) (window as unknown as Record<string, unknown>).__bluehop = { app, manager, settings, music };
 }
 
 boot().catch((err) => {

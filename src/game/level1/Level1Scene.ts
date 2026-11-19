@@ -708,6 +708,9 @@ export class Level1Scene extends Scene {
     if (d.state !== 'hidden') ring.circle(19, -19, 4.5).fill({ color, alpha: lit });
     d.icon.alpha = d.state === 'hidden' ? 0.35 : d.state === 'parked' ? 0.5 : 1;
     d.name.text = d.state === 'hidden' ? '?' : d.g.name;
+    // With piconet B on screen the orbit gets tight: active slaves show only their AMA badge
+    // (names come back on hover-free layouts with enough room).
+    d.name.visible = !(this.bonusAppear > 0.5 && d.state === 'active' && g.r1 < 150);
     d.name.style.fill = d.state === 'parked' ? C.grey : C.dim;
     d.badge.text = badge;
     d.badge.style.fill = badgeColor;

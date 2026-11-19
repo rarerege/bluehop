@@ -55,6 +55,11 @@ export function unlockBadge(id: string): boolean {
   return true;
 }
 
+/** Everything saved on this device (for the leaderboard / badges screen). */
+export function allProgress(): { best: Record<string, { score: number; stars: number }>; badges: string[] } {
+  return load();
+}
+
 export function hasBadge(id: string): boolean {
   return load().badges.includes(id);
 }

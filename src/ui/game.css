@@ -113,6 +113,28 @@
   .banner.banner--top {
     bottom: 9.5rem;
   }
+  /* Compact control bar so Level 2 fits in two rows */
+  .controls {
+    gap: 0.3rem;
+  }
+  .controls .btn--small {
+    padding: 0.35em 0.6em;
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    min-height: 40px;
+  }
+  .controls .btn--icon.btn--small {
+    width: 40px;
+    min-width: 40px;
+  }
+  .speed-box {
+    padding: 0;
+    gap: 0.2rem;
+  }
+  .speed-box output {
+    min-width: 5.8em;
+    font-size: 0.64rem;
+  }
 }
 
 /* Lab Mode numbers (only shown when Lab Mode is on) */
