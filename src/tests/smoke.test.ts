@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { parentPath, parseHash } from '../app/router';
-import { clampSpeedIndex, SLOT_US, SPEED_STEPS, simMicrosPerWallMs } from '../app/speed';
+import { clampSpeedIndex, DEFAULT_SPEED_INDEX, SLOT_US, SPEED_STEPS, simMicrosPerWallMs } from '../app/speed';
 
 /*
  * Phase 1 smoke tests: routing and the speed slider maths.
@@ -49,6 +49,6 @@ describe('simulation speed', () => {
   it('clamps out-of-range indices', () => {
     expect(clampSpeedIndex(-3)).toBe(0);
     expect(clampSpeedIndex(99)).toBe(SPEED_STEPS.length - 1);
-    expect(clampSpeedIndex(Number.NaN)).toBe(1);
+    expect(clampSpeedIndex(Number.NaN)).toBe(DEFAULT_SPEED_INDEX);
   });
 });

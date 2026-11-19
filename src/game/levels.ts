@@ -10,6 +10,8 @@ export interface LevelInfo {
   color: string;
   /** Build phase in which it becomes playable (for "coming soon" tags). */
   phase: number;
+  /** Playable now (otherwise shows a "Phase N" tag and a placeholder). */
+  ready?: boolean;
 }
 
 export const LEVELS: readonly LevelInfo[] = [
@@ -28,6 +30,7 @@ export const LEVELS: readonly LevelInfo[] = [
     concepts: ['FHSS 1600 hops/s', 'TDD 625 µs', 'ACL vs SCO', 'Collisions', 'AFH'],
     color: 'var(--magenta)',
     phase: 3,
+    ready: true,
   },
   {
     n: 3,

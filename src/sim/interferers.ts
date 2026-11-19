@@ -25,6 +25,44 @@ export interface Interferer {
   channelRange(): [number, number];
   /** Is the interferer on (anywhere) during this slot? */
   activeAt(slot: number): boolean;
+  /** Hopping interferers only: the channel used in this slot. */
+  channelAt?(slot: number): number;
+}
+
+/**
+ * Wraps an interferer so it only exists during [from, to) — used by level
+ * scripts ("Wi-Fi appears at slot 200, moves to channel 1 at slot 1250").
+ */
+export class TimedInterferer implements Interferer {
+  readonly id: string;
+  readonly kind: Interferer['kind'];
+  readonly label: string;
+
+  constructor(
+    readonly inner: Interferer,
+    readonly from: number,
+    readonly to = Infinity,
+  ) {
+    this.id = inner.id;
+    this.kind = inner.kind;
+    this.label = inner.label;
+  }
+
+  private live(slot: number): boolean {
+    return slot >= this.from && slot < this.to;
+  }
+  activeAt(slot: number): boolean {
+    return this.live(slot) && this.inner.activeAt(slot);
+  }
+  jams(channel: number, slot: number): boolean {
+    return this.live(slot) && this.inner.jams(channel, slot);
+  }
+  channelRange(): [number, number] {
+    return this.inner.channelRange();
+  }
+  channelAt(slot: number): number {
+    return this.inner.channelAt ? this.inner.channelAt(slot) : -1;
+  }
 }
 
 /**

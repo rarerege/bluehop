@@ -407,6 +407,10 @@ h3 {
   color: var(--text-dim);
   white-space: nowrap;
 }
+.chip--ready {
+  border-color: var(--green);
+  color: var(--green);
+}
 .chip--soon {
   border-color: var(--yellow);
   color: var(--yellow);

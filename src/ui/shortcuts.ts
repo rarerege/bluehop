@@ -23,7 +23,7 @@ export const SHORTCUTS: readonly Shortcut[] = [
 export interface ShortcutHandlers {
   /** Give the active scene first refusal (levels use P, R, 1–6…). */
   sceneKey(e: KeyboardEvent): boolean;
-  escape(): void;
+  escape(e: KeyboardEvent): void;
   toggleSound(): void;
   toggleLab(): void;
   toggleFullscreen(): void;
@@ -41,7 +41,7 @@ export function installShortcuts(hd: ShortcutHandlers): void {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.key === 'Escape') {
       e.preventDefault();
-      hd.escape();
+      hd.escape(e);
       return;
     }
     // Don't steal letters while the player types a nickname etc.

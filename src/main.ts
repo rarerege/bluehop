@@ -5,6 +5,7 @@
  * → routes → toolbar + shortcuts → start the hash router.
  */
 import './ui/theme.css';
+import './ui/game.css';
 import { Application } from 'pixi.js';
 import { SettingsStore } from './app/settings';
 import { SceneManager } from './app/SceneManager';
@@ -17,6 +18,7 @@ import { MenuScene } from './game/MenuScene';
 import { LevelSelectScene } from './game/LevelSelectScene';
 import { PlaceholderScene } from './game/PlaceholderScene';
 import { LEVELS } from './game/levels';
+import { Level2Scene } from './game/level2/Level2Scene';
 import { closeTopModal, isModalOpen } from './ui/Modal';
 import { openSettingsPanel } from './ui/SettingsPanel';
 import { openQrCard } from './ui/QrCard';
@@ -87,6 +89,7 @@ async function boot(): Promise<void> {
   manager.register('menu', () => new MenuScene());
   manager.register('levels', () => new LevelSelectScene());
   manager.register('level', (route) => {
+    if (route.params.n === '2') return new Level2Scene();
     const lv = LEVELS.find((l) => String(l.n) === route.params.n) ?? LEVELS[0]!;
     return new PlaceholderScene({
       title: `Level ${lv.n} — ${lv.title}`,
@@ -137,8 +140,10 @@ async function boot(): Promise<void> {
 
   installShortcuts({
     sceneKey: (e) => !isModalOpen() && manager.handleKey(e),
-    escape: () => {
+    escape: (e) => {
       if (closeTopModal()) return;
+      // Scenes get first refusal (close tutorial, pause a level…).
+      if (manager.handleKey(e)) return;
       ctx.back();
     },
     toggleSound: () => {

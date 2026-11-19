@@ -25,12 +25,19 @@ export const SPEED_STEPS: readonly SpeedStep[] = [
   { label: '1 hop / 0.5 s', hopsPerSecond: 2 },
   { label: '1 hop / 0.25 s', hopsPerSecond: 4 },
   { label: '1 hop / 0.1 s', hopsPerSecond: 10 },
+  { label: '20 hops / s', hopsPerSecond: 20 },
   { label: '50 hops / s', hopsPerSecond: 50 },
   { label: '200 hops / s', hopsPerSecond: 200 },
   { label: 'Real-time · 1600 hops / s', hopsPerSecond: REAL_HOPS_PER_SECOND },
 ];
 
-export const DEFAULT_SPEED_INDEX = 1;
+/** 10 hops/s: one simulated second (1600 slots) plays in about 2½ minutes. */
+export const DEFAULT_SPEED_INDEX = 2;
+
+/** Wall-clock hops per second at a speed step. */
+export function hopsPerSecondAt(index: number): number {
+  return SPEED_STEPS[clampSpeedIndex(index)]!.hopsPerSecond;
+}
 
 export function clampSpeedIndex(i: number): number {
   if (!Number.isFinite(i)) return DEFAULT_SPEED_INDEX;
