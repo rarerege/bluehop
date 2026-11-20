@@ -7,8 +7,8 @@ import { PACKETS, type AclType, type PacketTypeName, type ScoType } from './pack
 import { Rng } from './rng';
 
 /**
- * Slot-by-slot simulation of one piconet's radio link. Used by every level and
- * by Lab Mode.
+ * Slot-by-slot simulation of one piconet's radio link (TDD, ACL ARQ, SCO,
+ * interference). Unit-tested against the Bluetooth rates and rules.
  *
  * Rules implemented:
  *  - TDD: the master starts transmissions in even slots, a slave answers in the
@@ -92,7 +92,7 @@ export interface LinkStats {
   jammed: number;
   /** Packets hit by a rival piconet (same channel, same slot). */
   rivalCollisions: number;
-  /** Per-channel counters (for AFH channel assessment and Lab graphs). */
+  /** Per-channel counters (for AFH channel assessment). */
   sentPerChannel: number[];
   badPerChannel: number[];
 }
@@ -246,7 +246,7 @@ export class LinkSimulator {
     return out;
   }
 
-  /** Run without collecting transmissions (fast path for Lab Mode). */
+  /** Run without collecting transmissions (fast path for tests). */
   runQuiet(slots: number): void {
     const end = this.slot + slots;
     while (this.slot < end) this.next();
@@ -414,7 +414,7 @@ export class LinkSimulator {
   }
 }
 
-// ── Analytic throughput (Lab Mode theory curves) ────────────────────────
+// ── Analytic throughput ─────────────────────────────────────────────────
 
 /**
  * Expected forward goodput (bit/s) of saturated ACL traffic with ARQ, for a

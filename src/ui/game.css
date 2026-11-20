@@ -137,28 +137,6 @@
   }
 }
 
-/* Lab Mode numbers (only shown when Lab Mode is on) */
-.lab-box {
-  display: none;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--yellow);
-  background: rgba(20, 16, 0, 0.7);
-  border: 1px dashed rgba(255, 228, 92, 0.5);
-  border-radius: var(--radius-sm);
-  padding: 0.45rem 0.7rem;
-  line-height: 1.5;
-  flex-basis: 100%;
-  white-space: pre-wrap;
-  /* Keep the play area usable: long tables scroll inside the box. */
-  max-height: 7.8em;
-  overflow-y: auto;
-  pointer-events: auto;
-}
-[data-lab='true'] .lab-box {
-  display: block;
-}
-
 /* Legend */
 .legend {
   display: flex;
@@ -250,9 +228,6 @@
     padding-right: 0;
     margin-top: 3.4rem;
   }
-}
-.sb .lab-box {
-  margin-bottom: 0.8rem;
 }
 .sb-main {
   display: grid;

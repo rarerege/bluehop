@@ -11,7 +11,6 @@ export interface Shortcut {
 export const SHORTCUTS: readonly Shortcut[] = [
   { keys: 'Esc', action: 'Close dialog / go back' },
   { keys: 'M', action: 'Mute / unmute sound' },
-  { keys: 'L', action: 'Toggle Lab Mode (real numbers)' },
   { keys: 'F', action: 'Toggle fullscreen' },
   { keys: 'O', action: 'Open settings' },
   { keys: 'P', action: 'Pause / resume (Level 1)' },
@@ -25,7 +24,6 @@ export interface ShortcutHandlers {
   sceneKey(e: KeyboardEvent): boolean;
   escape(e: KeyboardEvent): void;
   toggleSound(): void;
-  toggleLab(): void;
   toggleFullscreen(): void;
   openSettings(): void;
 }
@@ -51,9 +49,6 @@ export function installShortcuts(hd: ShortcutHandlers): void {
     switch (e.key.toLowerCase()) {
       case 'm':
         hd.toggleSound();
-        break;
-      case 'l':
-        hd.toggleLab();
         break;
       case 'f':
         hd.toggleFullscreen();

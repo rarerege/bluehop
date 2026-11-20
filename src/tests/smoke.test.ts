@@ -20,12 +20,13 @@ describe('router', () => {
   });
 
   it('tolerates trailing slashes', () => {
-    expect(parseHash('#/lab/').name).toBe('lab');
+    expect(parseHash('#/leaderboard/').name).toBe('leaderboard');
+    expect(parseHash('#/lab').name).toBe('menu'); // Lab Mode was removed
   });
 
   it('sends Back from a level to Level Select, and from elsewhere to the menu', () => {
     expect(parentPath(parseHash('#/level/1'))).toBe('/levels');
-    expect(parentPath(parseHash('#/lab'))).toBe('/menu');
+    expect(parentPath(parseHash('#/leaderboard'))).toBe('/menu');
     expect(parentPath(parseHash('#/menu'))).toBeNull();
   });
 });

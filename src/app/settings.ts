@@ -11,8 +11,6 @@ export interface Settings {
   reducedMotion: boolean;
   /** Index into SPEED_STEPS. */
   speedIndex: number;
-  /** Shows the real numbers / graphs overlay for examiners. */
-  labMode: boolean;
 }
 
 const STORAGE_KEY = 'settings';
@@ -32,7 +30,6 @@ function defaults(): Settings {
     volume: 0.6,
     reducedMotion: prefersReducedMotion(),
     speedIndex: DEFAULT_SPEED_INDEX,
-    labMode: false,
   };
 }
 
@@ -49,7 +46,6 @@ function sanitize(raw: unknown): Settings {
     volume: vol,
     reducedMotion: bool('reducedMotion', d.reducedMotion),
     speedIndex: typeof r.speedIndex === 'number' ? clampSpeedIndex(r.speedIndex) : d.speedIndex,
-    labMode: bool('labMode', d.labMode),
   };
 }
 
@@ -81,7 +77,7 @@ export class SettingsStore {
     for (const l of this.listeners) l(this.state, changed);
   }
 
-  toggle(key: 'sound' | 'music' | 'reducedMotion' | 'labMode'): void {
+  toggle(key: 'sound' | 'music' | 'reducedMotion'): void {
     this.set({ [key]: !this.state[key] });
   }
 
@@ -94,6 +90,5 @@ export class SettingsStore {
   private reflectOnDocument(): void {
     const el = document.documentElement;
     el.dataset.reducedMotion = String(this.state.reducedMotion);
-    el.dataset.lab = String(this.state.labMode);
   }
 }

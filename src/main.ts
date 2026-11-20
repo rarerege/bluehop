@@ -18,7 +18,6 @@ import { MenuScene } from './game/MenuScene';
 import { LevelSelectScene } from './game/LevelSelectScene';
 import { Level1Scene } from './game/level1/Level1Scene';
 import { StackScene } from './game/stack/StackScene';
-import { LabScene } from './game/lab/LabScene';
 import { LeaderboardScene } from './game/LeaderboardScene';
 import { closeTopModal, isModalOpen } from './ui/Modal';
 import { openSettingsPanel } from './ui/SettingsPanel';
@@ -110,17 +109,12 @@ async function boot(): Promise<void> {
   manager.register('menu', () => new MenuScene());
   manager.register('levels', () => new LevelSelectScene());
   manager.register('level', (route) => (route.params.n === '2' ? new StackScene() : new Level1Scene()));
-  manager.register('lab', () => new LabScene());
   manager.register('leaderboard', () => new LeaderboardScene());
 
   mountToolbar(settings, {
     toggleSound: () => {
       settings.toggle('sound');
       audio.toggle(settings.get().sound);
-    },
-    toggleLab: () => {
-      settings.toggle('labMode');
-      audio.toggle(settings.get().labMode);
     },
     toggleFullscreen: () => void toggleFullscreen(),
     openSettings: () => ctx.openSettings(),
@@ -138,7 +132,6 @@ async function boot(): Promise<void> {
       settings.toggle('sound');
       audio.toggle(settings.get().sound);
     },
-    toggleLab: () => settings.toggle('labMode'),
     toggleFullscreen: () => void toggleFullscreen(),
     openSettings: () => ctx.openSettings(),
   });

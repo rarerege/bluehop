@@ -4,7 +4,7 @@ import { h } from './dom';
 import { openModal, type ModalHandle } from './Modal';
 import { SHORTCUTS } from './shortcuts';
 
-type BoolKey = 'sound' | 'music' | 'reducedMotion' | 'labMode';
+type BoolKey = 'sound' | 'music' | 'reducedMotion';
 
 /** Opens the Settings dialog. Controls write straight to the SettingsStore. */
 export function openSettingsPanel(settings: SettingsStore, audio: Synth): ModalHandle {
@@ -54,7 +54,6 @@ export function openSettingsPanel(settings: SettingsStore, audio: Synth): ModalH
     ),
     switchField('music', 'Music', 'Synthwave loop, generated live in your browser'),
     switchField('reducedMotion', 'Reduced motion', 'No screen shake, fewer particles, static background'),
-    switchField('labMode', 'Lab Mode', 'Overlay real numbers and graphs (for examiners)'),
     h('h3', { style: 'margin-top:1.4rem;font-size:1rem' }, 'Keyboard shortcuts'),
     h('table', { class: 'kbd-table' }, h('tbody', {}, ...kbdRows)),
   );

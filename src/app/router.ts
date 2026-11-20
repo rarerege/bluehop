@@ -1,11 +1,11 @@
 /**
- * Hash router: #/menu, #/levels, #/level/2, #/lab, #/leaderboard.
+ * Hash router: #/menu, #/levels, #/level/1, #/level/2, #/leaderboard.
  *
  * Hash routes work on GitHub Pages without any server rewrite rules.
  * `parseHash` is pure so it can be unit-tested; only `startRouter` touches `window`.
  */
 
-export type RouteName = 'menu' | 'levels' | 'level' | 'lab' | 'leaderboard';
+export type RouteName = 'menu' | 'levels' | 'level' | 'leaderboard';
 
 export interface Route {
   name: RouteName;
@@ -25,7 +25,6 @@ const ROUTES: RouteDef[] = [
   { pattern: /^\/menu$/, name: 'menu' },
   { pattern: /^\/levels$/, name: 'levels' },
   { pattern: /^\/level\/([1-2])$/, name: 'level', keys: ['n'] },
-  { pattern: /^\/lab$/, name: 'lab' },
   { pattern: /^\/leaderboard$/, name: 'leaderboard' },
 ];
 

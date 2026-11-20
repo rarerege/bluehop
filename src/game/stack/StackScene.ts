@@ -55,7 +55,6 @@ export class StackScene extends Scene {
   private main!: HTMLElement;
   private progress!: HTMLElement;
   private scoreEl!: HTMLElement;
-  private lab!: HTMLElement;
   private drag: { layer: LayerId; ghost: HTMLElement; sx: number; sy: number; moved: boolean; src: HTMLElement } | null = null;
 
   // ── Lifecycle ─────────────────────────────────────────────────────────
@@ -65,14 +64,12 @@ export class StackScene extends Scene {
     const back = button('', { icon: icons.back, className: 'btn--icon btn--small btn--ghost', ariaLabel: 'Back to level select', onClick: () => this.ctx.navigate('/levels') });
     this.progress = h('span', { class: 'hud__clock' });
     this.scoreEl = h('span', { class: 'sb-score mono' });
-    this.lab = h('div', { class: 'lab-box' });
     this.main = h('div', { class: 'sb-main' });
     this.dom.append(
       h(
         'div',
         { class: 'wrap sb' },
         h('div', { class: 'sb-head' }, back, h('h2', {}, 'Level 2 · Stack Builder'), this.progress, this.scoreEl),
-        this.lab,
         this.main,
       ),
     );
@@ -134,22 +131,10 @@ export class StackScene extends Scene {
     else this.progress.textContent = `Tower ${Math.min(this.cardIdx + 1, total)} of ${total}`;
     const { score } = scoreStack({ buildMistakes: this.mistakes, sortCorrect: this.sortCorrect, quizCorrect: this.quizCorrect });
     this.scoreEl.textContent = `${score} pts`;
-    this.renderLab();
 
     if (this.phase === 'sort') return this.renderSort();
     if (this.phase === 'quiz') return this.renderQuiz();
     this.renderBuild();
-  }
-
-  private renderLab(): void {
-    if (!this.ctx.settings.get().labMode) return;
-    const c = this.card;
-    this.lab.textContent = [
-      `${c.profile}  ·  link: ${c.link}${c.link === 'SCO' ? ' (reserved slots, 64 kbit/s, no ARQ)' : ' (packet-switched, ARQ)'}`,
-      `data path: ${c.stack.map((l) => LAYERS[l].name).join(' → ')}`,
-      `controller (chip): Radio, Baseband, LMP  ·  HCI  ·  host: L2CAP and above`,
-      `L2CAP header ${L2CAP_HEADER_BYTES} bytes (length + CID) · max payload 65 535 bytes · default MTU 672 bytes`,
-    ].join('\n');
   }
 
   private renderBuild(): void {

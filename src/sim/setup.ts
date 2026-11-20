@@ -24,7 +24,7 @@ export function sampleSetupTimeS(rng: Rng): number {
 /** Analytic mean of the model (= 0.64 s). */
 export const SETUP_MODEL_MEAN_S = SETUP_MAX_S / 4;
 
-/** CDF of the model, P(T ≤ t), for drawing the theory curve in Lab Mode. */
+/** CDF of the model, P(T ≤ t). */
 export function setupTimeCdf(tS: number): number {
   if (tS <= 0) return 0;
   if (tS >= SETUP_MAX_S) return 1;

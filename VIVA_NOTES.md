@@ -15,7 +15,7 @@ and the Bluetooth Core Specification v1.1 / v1.2.
 | **AMA, 3 bits** (000 = broadcast, 001–111 = slaves) | Badges AMA 001…111; the 8th gets "Piconet full!" | `freeAmAddr`, `connect` | "cannot exceed 7" test |
 | **Park → PMA, 8 bits** (> 200 parked) | Tap a slave → parking lot with a PM_ADDR; tap to unpark | `park`, `unpark` | 255 PM_ADDRs test |
 | **States**: standby → inquiry → page → connected | Radar sweep (inquiry), page beam, "syncing", connected; master state in the HUD | `setPhase` + `Level1Scene` | — |
-| **Forming a piconet**: master gives slaves its clock and device ID; ID = hop pattern, clock = phase | A paged slave's light locks onto the master's blink; Lab box shows BD_ADDR, clock offset, current hop frequency | `HopGenerator(masterAddress, clockOffset)` | "clock is the phase" test |
+| **Forming a piconet**: master gives slaves its clock and device ID; ID = hop pattern, clock = phase | A paged slave's light locks onto the master's blink; tapping a gadget shows its BD_ADDR | `HopGenerator(masterAddress, clockOffset)` | "clock is the phase" test |
 | **Setup time**: average 0.64 s, max 2.56 s | Discovery and page delays; avg page time in the HUD | `sampleSetupTimeS` in `sim/setup.ts` | mean/max test |
 | **Scatternet**: a device in two piconets, jumping back and forth | Bonus: drag a slave onto the Smart TV → bridge line switches between masters and shows each piconet's frequency | `Scatternet.bridgePresence / bridgeChannel` | scatternet test |
 
@@ -57,14 +57,13 @@ CIDs start at 0x0040). The CID in each L2CAP header tells the receiver which pro
 Code: `src/game/stack/model.ts` (layers, cards, `tryPlace` hints, `segment`, scoring);
 tests: `src/tests/stack.test.ts`.
 
-## 3. Lab Mode (examiners)
+## 3. Numbers to quote (checked by the engine's tests)
 
-| Panel | Theory | Simulated with the engine |
+| Topic | Value | Where it's tested |
 |---|---|---|
-| Collisions vs co-located piconets (FH-CDMA, "each piconet has a unique hopping pattern") | P = 1 − (78/79)^(n−1): n = 2 → 1.27 %, n = 10 → 10.8 % | `simulateCollisionRate` |
-| Connection setup time histogram | mean 0.64 s, max 2.56 s | `setupHistogram` |
-| Max data-rate table | 433.9 symmetric; 723.2 / 57.6 asymmetric; SCO 64 kbit/s | `rateTable` |
-| Throughput vs bit-error rate, Wi-Fi loss with / without AFH | Beyond the Unit 5 slides — extra depth if asked about FEC, ARQ or 802.15.2 coexistence | `analyticGoodputBps`, `simulatedWifiLossPct` |
+| Co-located piconets (FH-CDMA, "each piconet has a unique hopping pattern") | P(collision) = 1 − (78/79)^(n−1): n = 2 → 1.27 %, n = 10 → 10.8 % | `interference.test.ts` |
+| Connection setup time | mean 0.64 s, max 2.56 s | `piconet.test.ts` |
+| Max data rates | 433.9 symmetric; 723.2 / 57.6 asymmetric; SCO 64 kbit/s | `packets.test.ts` |
 
 Rate derivation to quote: DH5 carries 339 bytes in 5 slots + 1 return slot →
 339 × 8 / (6 × 625 µs) = **723.2 kbit/s**; return DH1 27 × 8 / 3.75 ms = **57.6 kbit/s**;
@@ -92,7 +91,7 @@ DH5 both ways 339 × 8 / (10 × 625 µs) = **433.9 kbit/s**. Slot = 1 s / 1600 h
 6. BNEP and the PAN profile came after Bluetooth 1.1 (the game says so). In 1.1, LAN access used
    PPP over RFCOMM.
 
-**Engine / Lab Mode**
+**Engine**
 7. Bit errors are independent; CRC and HEC detect all residual errors; piconets are slot-aligned;
    interferer models (Wi-Fi bursts, microwave at 50 Hz) are game models.
 
@@ -125,6 +124,7 @@ DH5 both ways 339 × 8 / (10 × 625 µs) = **433.9 kbit/s**. Slot = 1 s / 1600 h
 1. **Menu** → `F` for fullscreen, **Scan to play** so classmates join on their phones.
 2. **Level 1** (2 min): Inquiry; page 3–4 gadgets and point at the AMA badges; page to 7, show
    "Piconet full!", park one, show the PMA; if time, the scatternet bridge.
-3. **Level 2** (2 min): build the headset tower (voice skips L2CAP), then the vCard tower and send it —
-   point at the headers being added on the way down; sort one message in the post office.
-4. **Lab Mode** (1 min): collision graph and the rate table — dots on the theory lines.
+3. **Level 2** (2–3 min): build the headset tower (voice skips L2CAP), then the vCard tower and send
+   it — point at the headers being added on the way down; sort one message in the post office.
+
+The full spoken script is in [DEMO_SCRIPT.md](DEMO_SCRIPT.md).

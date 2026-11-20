@@ -2,13 +2,12 @@
 
 A neon, browser-based game that teaches **Bluetooth (IEEE 802.15.1 / Bluetooth 1.x)** for
 *Modern Wireless Communication Systems, Unit 5*. Each level turns one group of lecture slides into
-something you do with your hands, and **Lab Mode** shows the real numbers and graphs for examiners.
+something you do with your hands, and the rules come from a unit-tested Bluetooth engine.
 
 | Level | What you do | Slides it covers |
 |---|---|---|
 | **1 · Assemble the Piconet** | Run an inquiry, drag gadgets onto your master to page them, park the 8th, bridge into a second piconet | Piconet (1 master + 7), forming a piconet (master's ID + clock), AMA 3-bit, PMA 8-bit, park, standby → inquiry → page → connected, setup time 0.64 s / 2.56 s, scatternet |
 | **2 · Stack Builder** | Build the protocol "tower" six apps need, send a packet through it, then run the L2CAP post office | Bluetooth protocol stack, HCI, LMP, SCO vs ACL, RFCOMM / OBEX / SDP / TCS BIN / AT / PPP / BNEP, profiles, L2CAP multiplexing (CIDs), segmentation & reassembly |
-| **Lab Mode** | Run experiments on the radio engine, export CSV | Collision probability between piconets (FH-CDMA), setup-time distribution, 433.9 / 723.2 / 57.6 kbit/s rate table, plus throughput vs bit-error rate and Wi-Fi coexistence |
 
 See **[VIVA_NOTES.md](VIVA_NOTES.md)** for the mapping from every mechanic to its Bluetooth concept,
 the numbers to quote, and the list of simplifications.
@@ -24,7 +23,7 @@ Requires Node 20+ (developed on Node 24).
 ```bash
 npm install
 npm run dev        # http://localhost:5173 — also prints a Network URL for phones on the same Wi-Fi
-npm test           # Vitest (80 tests)
+npm test           # Vitest (74 tests)
 npm run build      # type-check (tsc) + production build into dist/
 npm run preview    # serve the production build locally
 ```
@@ -60,11 +59,10 @@ Everything works with touch, mouse or keyboard. The shortcuts are also listed in
 | `I` | Inquiry (Level 1) |
 | `Tab` + `Enter` | Pick a block or an answer (Level 2) |
 | `M` | Mute / unmute |
-| `L` | Toggle Lab Mode overlay (live numbers in the levels) |
 | `F` | Fullscreen (projector) |
 | `O` | Settings |
 
-**Settings:** sound effects, music (a synthwave loop generated live), volume, reduced motion, Lab Mode.
+**Settings:** sound effects, music (a synthwave loop generated live), volume, reduced motion.
 Level 1 runs at ½× simulated time so connection setup is visible; the HUD always shows simulated time.
 
 ---
@@ -84,16 +82,13 @@ src/
     interferers.ts  Wi-Fi, microwave, rival piconet, collision theory
     afh.ts          AFH channel map (≥ 20 channels)
     link.ts         slot-by-slot link simulator: TDD, ACL ARQ, SCO, interference
-    experiments.ts  Lab Mode experiments (analytic + simulated)
   game/
     level1/         Piconet level (Pixi canvas) — uses sim/piconet.ts and sim/setup.ts
     stack/          Stack Builder (DOM) — model.ts holds the layers, cards, hints and L2CAP maths
-    lab/            Lab Mode screen (Chart.js, loaded lazily)
     Backdrop.ts, fx.ts, MenuScene.ts, LevelSelectScene.ts, LeaderboardScene.ts (Trophies)
   ui/         DOM overlay: theme, toolbar, modals, tutorial / pause / end cards, shortcuts
   app/        scene manager, hash router, settings, progress, safe storage
   audio/      procedural Web Audio sound effects and music (no audio files)
-  lab/        Web Worker + protocol for Lab simulations, CSV export
   tests/      Vitest
 ```
 
@@ -101,14 +96,14 @@ src/
 `src/game/level1/scoring.ts`); the scenes only draw what those modules report.
 
 **Stack:** Vite + TypeScript (strict), PixiJS v8 + pixi-filters (bloom), plain DOM + CSS variables,
-Chart.js, Web Audio, `qrcode`, Vitest.
+Web Audio, `qrcode`, Vitest.
 
-**Performance:** particles are capped, bloom runs only on glowing layers, render resolution is capped
-at ~2.2 M device pixels (1080p projector renders at 1×, 60 fps), Lab simulations run in a Web Worker.
+**Performance:** particles are capped, bloom runs only on glowing layers, and render resolution is
+capped at ~2.2 M device pixels (1080p projector renders at 1×, 60 fps).
 
 ### What the tests cover
 
-`npm test` runs 80 tests, including:
+`npm test` runs 74 tests, including:
 
 - channel frequencies (k = 0 → 2402 MHz, k = 78 → 2480 MHz); 1600 slots = 1 s; TDD even/odd slots;
   the multi-slot hop rule (3-slot packet on hop *i* → next packet on *i* + 3)
@@ -127,7 +122,7 @@ at ~2.2 M device pixels (1080p projector renders at 1×, 60 fps), Lab simulation
 
 - All graphics and audio are generated in code for this project. The logo is an original "hop trail"
   design, **not** the Bluetooth® trademark.
-- Libraries (all MIT): PixiJS, pixi-filters, Chart.js, qrcode, Vite, Vitest; TypeScript (Apache-2.0).
+- Libraries (all MIT): PixiJS, pixi-filters, qrcode, Vite, Vitest; TypeScript (Apache-2.0).
 - Sources: J. Schiller, *Mobile Communications* (Unit 5 slides, §7.5 Bluetooth); the course textbook
   chapter 9 "Short-range Wireless Networks" (Bluetooth profiles and protocol stack); Bluetooth Core
   Specification v1.1 / v1.2; IEEE 802.15.1-2002.

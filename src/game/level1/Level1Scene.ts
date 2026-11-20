@@ -3,7 +3,7 @@ import { AdvancedBloomFilter } from 'pixi-filters';
 import { Scene } from '../../app/Scene';
 import type { BackdropMode } from '../Backdrop';
 import { BADGES, recordResult, unlockBadge, type BadgeInfo } from '../../app/progress';
-import { channelFreqMHz, MAX_ACTIVE_SLAVES, SETUP_MAX_S, SETUP_MEAN_S, SLOT_S } from '../../sim/constants';
+import { channelFreqMHz, MAX_ACTIVE_SLAVES, SETUP_MEAN_S, SLOT_S } from '../../sim/constants';
 import { Piconet, Scatternet, type Bridge } from '../../sim/piconet';
 import { Rng } from '../../sim/rng';
 import { sampleSetupTimeS } from '../../sim/setup';
@@ -150,7 +150,6 @@ export class Level1Scene extends Scene {
     banner: HTMLElement;
     stats: Record<'active' | 'parked' | 'setup' | 'phase', HTMLElement>;
     objectives: HTMLElement;
-    lab: HTMLElement;
     inquiry: HTMLButtonElement;
     finish: HTMLButtonElement;
     pauseBtn: HTMLButtonElement;
@@ -1013,14 +1012,12 @@ export class Level1Scene extends Scene {
     const clock = h('span', { class: 'hud__clock' }, '');
     const back = button('', { icon: icons.back, className: 'btn--icon btn--small btn--ghost', ariaLabel: 'Back to level select', onClick: () => this.ctx.navigate('/levels') });
     const objectives = h('ul', { class: 'objectives' });
-    const lab = h('div', { class: 'lab-box' });
     const hud = h(
       'div',
       { class: 'hud' },
       h('div', { class: 'hud__title' }, back, h('h2', {}, 'Level 1 · Assemble the Piconet'), clock),
       h('div', { class: 'hud__stats' }, active.el, parked.el, setup.el, phase.el),
       objectives,
-      lab,
     );
 
     const inquiry = button('Inquiry', { className: 'btn--primary', title: 'Discover nearby devices (I)', onClick: () => this.startInquiry() });
@@ -1037,7 +1034,6 @@ export class Level1Scene extends Scene {
       banner,
       stats: { active: active.value, parked: parked.value, setup: setup.value, phase: phase.value },
       objectives,
-      lab,
       inquiry,
       finish,
       pauseBtn,
@@ -1077,21 +1073,5 @@ export class Level1Scene extends Scene {
     this.els.objectives.replaceChildren(
       ...obj.map(([done, text]) => h('li', { class: done ? 'done' : '' }, h('span', { class: 'tick' }, done ? '✓' : '○'), text)),
     );
-
-    if (this.ctx.settings.get().labMode) {
-      const rows = this.devs
-        .filter((d) => d.state === 'active' || d.state === 'parked' || d.state === 'bridge')
-        .map((d) => {
-          const dev = this.pico.get(d.g.id)!;
-          const addr = dev.amAddr !== null ? `AM_ADDR ${amBits(dev.amAddr)}` : `PM_ADDR 0x${pmHex(dev.pmAddr ?? 0)}`;
-          return `  ${addr.padEnd(16)} ${d.g.name.padEnd(14)} ${formatBdAddr(d.addr)}  ${dev.state}${d.state === 'bridge' ? ' + slave in B' : ''}`;
-        });
-      this.els.lab.textContent = [
-        `master BD_ADDR ${formatBdAddr(this.pico.masterAddress)}  ·  CLK offset ${this.pico.hop.clockOffset}  ·  hop seed 0x${this.pico.hop.seed.toString(16)}`,
-        `hop pattern = f(master BD_ADDR, master CLK)  ·  slot ${Math.floor(this.simTime / SLOT_S)}  ·  current f = ${channelFreqMHz(this.pico.hop.channelAt(Math.floor(this.simTime / SLOT_S)))} MHz`,
-        `setup model: T = ${SETUP_MAX_S} s × Beta(1,3) → mean ${SETUP_MEAN_S} s, max ${SETUP_MAX_S} s  ·  samples: ${this.setupTimes.map((t) => t.toFixed(2)).join(', ') || '—'}`,
-        ...rows,
-      ].join('\n');
-    }
   }
 }

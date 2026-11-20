@@ -110,7 +110,7 @@ export function samplePacket(spec: PacketSpec, ber: number, rng: Rng): PacketOut
   return rng.chance(pPayload(spec, ber)) ? 'ok' : 'payload-error';
 }
 
-/** Expected number of bit errors in a packet (for HUD / Lab display). */
+/** Expected number of bit errors in a packet. */
 export function expectedBitErrors(spec: PacketSpec, ber: number): number {
   return ber * (ACCESS_CODE_BITS + HEADER_INFO_BITS * 3 + payloadInfoBits(spec));
 }

@@ -13,7 +13,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "chart.js": "^4.6.1",
     "pixi-filters": "^6.1.5",
     "pixi.js": "^8.23.0",
     "qrcode": "^1.5.4"

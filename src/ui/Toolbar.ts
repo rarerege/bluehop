@@ -4,7 +4,6 @@ import { icons } from './icons';
 
 interface ToolbarActions {
   toggleSound(): void;
-  toggleLab(): void;
   toggleFullscreen(): void;
   openSettings(): void;
 }
@@ -22,16 +21,10 @@ export async function toggleFullscreen(): Promise<void> {
   }
 }
 
-/** Persistent top-right controls: Lab Mode, sound, fullscreen, settings. */
+/** Persistent top-right controls: sound, fullscreen, settings. */
 export function mountToolbar(settings: SettingsStore, actions: ToolbarActions): HTMLElement {
   const bar = document.createElement('div');
   bar.className = 'toolbar';
-
-  const lab = button('LAB', {
-    className: 'btn--small lab-pill',
-    title: 'Lab Mode — real numbers & graphs (L)',
-    onClick: () => actions.toggleLab(),
-  });
 
   const sound = button('', { className: 'btn--icon', onClick: () => actions.toggleSound() });
 
@@ -53,7 +46,6 @@ export function mountToolbar(settings: SettingsStore, actions: ToolbarActions): 
 
   const sync = () => {
     const s = settings.get();
-    lab.setAttribute('aria-pressed', String(s.labMode));
     sound.replaceChildren(html(s.sound ? icons.soundOn : icons.soundOff));
     sound.title = s.sound ? 'Mute (M)' : 'Unmute (M)';
     sound.setAttribute('aria-label', s.sound ? 'Mute sound' : 'Unmute sound');
@@ -61,7 +53,7 @@ export function mountToolbar(settings: SettingsStore, actions: ToolbarActions): 
   sync();
   settings.subscribe(sync);
 
-  bar.append(lab, sound);
+  bar.append(sound);
   if (fullscreenSupported()) bar.append(fs);
   bar.append(gear);
   document.body.appendChild(bar);
